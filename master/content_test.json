@@ -1,0 +1,46 @@
+{ "filters" :
+    {
+       "CAS Provo": {
+            "agents": [
+                "Test Good", "Test Fake"
+            ],
+            "trigger": "cas.byub.org",
+            "condition": {
+                "ip": "192.*"
+            }
+        },
+        "CAS DR": {
+            "agents": [
+                "Test Bad", "Test Other"
+            ],
+            "trigger": "cas.byub.org",
+            "condition": {
+                "ip": "172.*"
+            }
+        },
+        "Fake Filter": {
+            "agents": [
+                "Test Fake", "Test None"
+            ],
+            "trigger": "cas.byub.org",
+            "condition": {
+                "ip": "172.*"
+            }
+        }
+    }, 
+"agents" :
+    [
+        {
+            "name": "Test Good",
+            "addr": "192.168.73.227:23456"
+        },
+        {
+            "name": "Test Bad",
+            "addr": "192.168.73.8:23458"
+        },
+        {
+            "name": "Test False",
+            "addr": "192.168.73.6:23458"
+        }
+    ]
+}

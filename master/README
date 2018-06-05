@@ -1,0 +1,76 @@
+#### General Information ####
+
+Run the copycat-master.py python script on the master machine (192.168.73.5) and
+copycat-agent.py on the agent (192.168.73.12). Then update the records and verify
+that they propagate.
+
+There are 3 databases:
+    - powerdns
+        - Connected to the phpipam interface at http://192.168.73.5/phpipam
+    - powerdns_small
+        - Has about 30 records to test with
+    - powerdns_large
+        - Has about 400,000 records to test with
+
+View the databases in mariadb
+    mysql -u root -p
+    use [database]
+        i.e. use powerdns
+    
+All credentials are root with the server password. The only difference is
+phpipam. The username is 'admin' but the password is still the server pasword.
+
+The only record types that work, and should work, are NS, A, PTR.
+
+#### General Application Process ####
+
+A record is created, updated, or deleted.
+The master script is checking every determined amount of time (set in .cfg file
+    under the setting 'poll') by calling methods on the communicator.py script.
+If changes are made the master copies those changes locally and runs the command
+    dnsmasq --test
+If the command passes, then the changes have been verified and the master will
+    send an encrypted string of these changes to each agent.
+The agents get the string, decode it, and copy it to their local .conf files
+When the master has finished sending changes, it will send a reload command to
+    each agent and they will run the commands
+        systemctl stop dnsmasq
+        systemctl start dnsmasq
+    in order to reload DNSMasq and implement the changes.
+
+
+### Other Processes ###
+
+# Polling
+
+Every determined amount of time (set in .cfg file under the setting 'statusCheck')
+    the master will poll each agent to check if it can still complete a connection.
+If an error occurs, then the agent's status is set to false.
+
+
+# Handshake
+
+Every determined amount of time (set in .cfg file under the setting 'handshake')
+    the master will re-initialize each agent's secret key. This is done by:
+        - Creating a new key.
+        - Sending the public key to agent/handshak
+        - retreiving the agent's public key
+        - both the master and the agent then generate a new key
+
+
+# Master Server
+
+There is a thread running a twisted server in the master instance. This thread
+is waiting for new agents to turn on and call home. They will shake hands to
+generate the secret key and then the agent will retrieve all the up to date
+records.
+
+
+### Setup ###
+
+Execute the pdns_integrate.sql script to create the required tables, triggers
+and users for copycat-master to run.
+
+Move the init.d script to /usr/lib/systemd/system/
+
+Edit settings in master.cfg

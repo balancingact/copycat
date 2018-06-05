@@ -1,0 +1,75 @@
+{ "filters" :
+    {
+        "cas_is": {
+            "agents": [
+                "Old DNS 1", "Old DNS 2", "Web DNS 1", "Web DNS 2", "CER DNS 1", "CER DNS 2"
+            ],
+            "name": "cas.byub.org",
+            "condition": {
+                "ip": "192.*"
+            }
+        },
+        "cas_not": {
+            "agents": [
+                "DR DNS 1", "DR DNS 2"
+            ],
+            "name": "cas.byub.org",
+            "condition": {
+                "ip": "172.*"
+            }
+        },
+        "byutv_is": {
+            "agents": [
+                "Old DNS 1", "Old DNS 2", "Web DNS 1", "Web DNS 2", "CER DNS 1", "CER DNS 2"
+            ],
+            "name": "byutv.org",
+            "condition": {
+                "ip": "192.*"
+            }
+        },
+        "byutv_not": {
+            "agents": [
+                "DR DNS 1", "DR DNS 2"
+            ],
+            "name": "byutv.org",
+            "condition": {
+                "ip": "172.*"
+            }
+        }
+    },
+"agents":
+    [
+        {
+            "name": "Old DNS 1",
+            "addr": "192.168.21.78:23456"
+        },
+        {
+            "name": "Old DNS 2",
+            "addr": "192.168.21.79:23456"
+        },
+        {
+            "name": "Web DNS 1",
+            "addr": "192.168.101.3:23456"
+        },
+        {
+            "name": "Web DNS 2",
+            "addr": "192.168.101.4:23456"
+        },
+        {
+            "name": "CER DNS 1",
+            "addr": "192.168.71.78:23456"
+        },
+        {
+            "name": "CER DNS 2",
+            "addr": "192.168.71.79:23456"
+        },
+        {
+            "name": "DR DNS 1",
+            "addr": "172.31.100.3:23456"
+        },
+        {
+            "name": "DR DNS 2",
+            "addr": "172.31.100.4:23456"
+        }
+    ]
+}

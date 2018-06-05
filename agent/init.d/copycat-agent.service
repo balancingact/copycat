@@ -1,0 +1,10 @@
+[Unit]
+Description=Copycat Agent Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/share/copycat/copycat-agent.py
+
+[Install]
+WantedBy=multi-user.target

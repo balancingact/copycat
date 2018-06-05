@@ -1,0 +1,10 @@
+[Unit]
+Description=Copycat Master Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/share/copycat/copycat-master.py
+
+[Install]
+WantedBy=multi-user.target
